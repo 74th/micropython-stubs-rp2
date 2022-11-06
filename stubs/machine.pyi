@@ -510,7 +510,7 @@ class RTC:
     """
 
     def __init__(self, id: int = 0, *args) -> None: ...
-    def datetime(self, datetimetuple: Optional[list[int]] = None) -> Tuple:
+    def datetime(self, datetimetuple: Optional[tuple[int, int, int, int, int, int, int, int]] = None) -> Tuple:
         """
         Get or set the date and time of the RTC.
 
