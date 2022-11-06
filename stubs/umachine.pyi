@@ -8,20 +8,7 @@ and unrestricted access to and control of hardware blocks on a system
 malfunction, lockups, crashes of your board, and in extreme cases, hardware
 damage.
 """
-from typing import (
-    Callable,
-    Coroutine,
-    Dict,
-    Generator,
-    IO,
-    Iterator,
-    List,
-    NoReturn,
-    Optional,
-    Tuple,
-    Union,
-    Any,
-)
+from typing import Callable, Coroutine, Dict, Generator, IO, Iterator, List, NoReturn, Optional, Tuple, Union, Any
 
 class ADC:
     """
@@ -39,7 +26,7 @@ class ADC:
       - *atten* specifies the input attenuation.
     """
 
-    def __init__(self, id: int, *, sample_ns: int, atten) -> None: ...
+    def __init__(self, id, *, sample_ns, atten) -> None: ...
     CORE_TEMP: int
     def read_u16(self) -> int:
         """
@@ -65,8 +52,8 @@ class I2C:
     of *scl* and *sda* that cannot be changed.
     """
 
-    def __init__(self, id: int, *, scl: Pin, sda: Pin, freq: int = 400000): ...
-    def readinto(self, buf: bytes, nack: bool = True, /):
+    def __init__(self, id, *, scl, sda, freq=400000) -> None: ...
+    def readinto(self, buf, nack=True, /) -> Any:
         """
         Reads bytes from the bus and stores them into *buf*.  The number of bytes
         read is the length of *buf*.  An ACK will be sent on the bus after
@@ -75,24 +62,24 @@ class I2C:
         case the peripheral assumes more bytes are going to be read in a later call).
         """
         ...
-    def start(self):
+    def start(self) -> None:
         """
         Generate a START condition on the bus (SDA transitions to low while SCL is high).
         """
         ...
-    def stop(self):
+    def stop(self) -> None:
         """
         Generate a STOP condition on the bus (SDA transitions to high while SCL is high).
         """
         ...
-    def write(self, buf: bytes) -> int:
+    def write(self, buf) -> int:
         """
         Write the bytes from *buf* to the bus.  Checks that an ACK is received
         after each byte and stops transmitting the remaining bytes if a NACK is
         received.  The function returns the number of ACKs that were received.
         """
         ...
-    def init(self, scl: Pin, sda: Pin, *, freq: int = 400000):
+    def init(self, scl, sda, *, freq=400000) -> None:
         """
         Initialise the I2C bus with the given arguments:
 
@@ -101,14 +88,14 @@ class I2C:
            - *freq* is the SCL clock rate
         """
         ...
-    def readfrom(self, addr: int, nbytes: int, stop: bool = True, /) -> bytes:
+    def readfrom(self, addr, nbytes, stop=True, /) -> bytes:
         """
         Read *nbytes* from the peripheral specified by *addr*.
         If *stop* is true then a STOP condition is generated at the end of the transfer.
         Returns a `bytes` object with the data read.
         """
         ...
-    def readfrom_into(self, addr: int, buf: bytes, stop: bool = True, /) -> None:
+    def readfrom_into(self, addr, buf, stop=True, /) -> None:
         """
         Read into *buf* from the peripheral specified by *addr*.
         The number of bytes read will be the length of *buf*.
@@ -117,9 +104,7 @@ class I2C:
         The method returns ``None``.
         """
         ...
-    def readfrom_mem(
-        self, addr: int, memaddr: int, nbytes: int, *, addrsize: int = 8
-    ) -> bytes:
+    def readfrom_mem(self, addr, memaddr, nbytes, *, addrsize=8) -> bytes:
         """
         Read *nbytes* from the peripheral specified by *addr* starting from the memory
         address specified by *memaddr*.
@@ -127,9 +112,7 @@ class I2C:
         Returns a `bytes` object with the data read.
         """
         ...
-    def readfrom_mem_into(
-        self, addr: int, memaddr: int, buf: bytes, *, addrsize: int = 8
-    ) -> None:
+    def readfrom_mem_into(self, addr, memaddr, buf, *, addrsize=8) -> None:
         """
         Read into *buf* from the peripheral specified by *addr* starting from the
         memory address specified by *memaddr*.  The number of bytes read is the
@@ -140,14 +123,14 @@ class I2C:
         The method returns ``None``.
         """
         ...
-    def scan(self) -> list[int]:
+    def scan(self) -> List:
         """
         Scan all I2C addresses between 0x08 and 0x77 inclusive and return a list of
         those that respond.  A device responds if it pulls the SDA line low after
         its address (including a write bit) is sent on the bus.
         """
         ...
-    def writeto(self, addr: int, buf: bytes, stop: bool = True, /) -> int:
+    def writeto(self, addr, buf, stop=True, /) -> int:
         """
         Write the bytes from *buf* to the peripheral specified by *addr*.  If a
         NACK is received following the write of a byte from *buf* then the
@@ -156,9 +139,7 @@ class I2C:
         The function returns the number of ACKs that were received.
         """
         ...
-    def writeto_mem(
-        self, addr: int, memaddr: int, buf: bytes, *, addrsize: int = 8
-    ) -> None:
+    def writeto_mem(self, addr, memaddr, buf, *, addrsize=8) -> None:
         """
         Write *buf* to the peripheral specified by *addr* starting from the
         memory address specified by *memaddr*.
@@ -168,7 +149,7 @@ class I2C:
         The method returns ``None``.
         """
         ...
-    def writevto(self, addr: int, vector: bytes, stop: int = True, /) -> int:
+    def writevto(self, addr, vector, stop=True, /) -> int:
         """
         Write the bytes contained in *vector* to the peripheral specified by *addr*.
         *vector* should be a tuple or list of objects with the buffer protocol.
@@ -210,9 +191,7 @@ class I2S:
     before underflow (e.g. ``write`` method) or overflow (e.g. ``readinto`` method).
     """
 
-    def __init__(
-        self, id, *, sck, ws, sd, mck=None, mode, bits, format, rate, ibuf
-    ) -> None: ...
+    def __init__(self, id, *, sck, ws, sd, mck=None, mode, bits, format, rate, ibuf) -> None: ...
     def readinto(self, buf) -> int:
         """
         Read audio samples into the buffer specified by ``buf``.  ``buf`` must support the buffer protocol, such as bytearray or array.
@@ -379,9 +358,7 @@ class Pin:
     ``Pin.OPEN_DRAIN``, the alternate function will be removed from the pin.
     """
 
-    def __init__(
-        self, id, mode=-1, pull=-1, *, value=None, drive=0, alt=-1
-    ) -> None: ...
+    def __init__(self, id, mode=-1, pull=-1, *, value=None, drive=0, alt=-1) -> None: ...
     def value(self, x: Optional[Any] = None) -> int:
         """
         This method allows to set and get the value of the pin, depending on whether
@@ -439,9 +416,7 @@ class Pin:
         Returns ``None``.
         """
         ...
-    def irq(
-        self, handler=None, trigger=IRQ_FALLING, *, priority=1, wake=None, hard=False
-    ) -> Callable[..., Any]:
+    def irq(self, handler=None, trigger=IRQ_FALLING, *, priority=1, wake=None, hard=False) -> Callable[..., Any]:
         """
            Configure an interrupt handler to be called when the trigger source of the
            pin is active.  If the pin mode is ``Pin.IN`` then the trigger source is
@@ -509,8 +484,8 @@ class RTC:
     Create an RTC object. See init for parameters of initialization.
     """
 
-    def __init__(self, id: int = 0, *args) -> None: ...
-    def datetime(self, datetimetuple: Optional[list[int]] = None) -> Tuple:
+    def __init__(self, id=0, *args) -> None: ...
+    def datetime(self, datetimetuple: Optional[Any] = None) -> Tuple:
         """
         Get or set the date and time of the RTC.
 
@@ -571,17 +546,7 @@ class SPI:
         """
         ...
     def init(
-        self,
-        baudrate=1000000,
-        *,
-        polarity=0,
-        phase=0,
-        bits=8,
-        firstbit=MSB,
-        sck=None,
-        mosi=None,
-        miso=None,
-        pins: Optional[Tuple],
+        self, baudrate=1000000, *, polarity=0, phase=0, bits=8, firstbit=MSB, sck=None, mosi=None, miso=None, pins: Optional[Tuple]
     ) -> None:
         """
         Initialise the SPI bus with the given parameters:
@@ -703,18 +668,7 @@ class SoftSPI:
     to initialise the bus.  See `SPI.init` for a description of the parameters.
     """
 
-    def __init__(
-        self,
-        baudrate=500000,
-        *,
-        polarity=0,
-        phase=0,
-        bits=8,
-        firstbit=MSB,
-        sck=None,
-        mosi=None,
-        miso=None,
-    ) -> None: ...
+    def __init__(self, baudrate=500000, *, polarity=0, phase=0, bits=8, firstbit=MSB, sck=None, mosi=None, miso=None) -> None: ...
     def read(self, *args, **kwargs) -> Any: ...
     def readinto(self, *args, **kwargs) -> Any: ...
     def write(self, *args, **kwargs) -> Any: ...

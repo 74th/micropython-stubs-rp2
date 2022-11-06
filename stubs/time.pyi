@@ -30,22 +30,9 @@ If actual calendar time is not maintained with a system/MicroPython RTC,
 functions below which require reference to current absolute time may
 behave not as expected.
 """
-from typing import (
-    Callable,
-    Coroutine,
-    Dict,
-    Generator,
-    IO,
-    Iterator,
-    List,
-    NoReturn,
-    Optional,
-    Tuple,
-    Union,
-    Any,
-)
+from typing import Callable, Coroutine, Dict, Generator, IO, Iterator, List, NoReturn, Optional, Tuple, Union, Any
 
-def gmtime(secs: Optional[Any] = None) -> tuple[int, int, int, int, int, int, int]:
+def gmtime(secs: Optional[Any] = None) -> Tuple:
     """
     Convert the time *secs* expressed in seconds since the Epoch (see above) into an
     8-tuple which contains: ``(year, month, mday, hour, minute, second, weekday, yearday)``
@@ -67,9 +54,7 @@ def gmtime(secs: Optional[Any] = None) -> tuple[int, int, int, int, int, int, in
     """
     ...
 
-def localtime(
-    secs: Optional[Any] = None,
-) -> tuple[int, int, int, int, int, int, int, int]:
+def localtime(secs: Optional[Any] = None) -> Tuple:
     """
     Convert the time *secs* expressed in seconds since the Epoch (see above) into an
     8-tuple which contains: ``(year, month, mday, hour, minute, second, weekday, yearday)``
@@ -99,7 +84,7 @@ def mktime() -> int:
     """
     ...
 
-def sleep(seconds: float):
+def sleep(seconds) -> Any:
     """
     Sleep for the given number of seconds. Some boards may accept *seconds* as a
     floating-point number to sleep for a fractional number of seconds. Note that
@@ -108,7 +93,7 @@ def sleep(seconds: float):
     """
     ...
 
-def sleep_ms(ms: int):
+def sleep_ms(ms) -> None:
     """
     Delay for given number of milliseconds, should be positive or 0.
 
@@ -119,7 +104,7 @@ def sleep_ms(ms: int):
     """
     ...
 
-def sleep_us(us: int):
+def sleep_us(us) -> None:
     """
     Delay for given number of microseconds, should be positive or 0.
 
@@ -129,7 +114,7 @@ def sleep_us(us: int):
     """
     ...
 
-def ticks_add(ticks: int, delta: int) -> int:
+def ticks_add(ticks, delta) -> Any:
     """
     Offset ticks value by a given number, which can be either positive or negative.
     Given a *ticks* value, this function allows to calculate ticks value *delta*
@@ -157,7 +142,7 @@ def ticks_add(ticks: int, delta: int) -> int:
     """
     ...
 
-def ticks_cpu() -> int:
+def ticks_cpu() -> Any:
     """
     Similar to `ticks_ms()` and `ticks_us()`, but with the highest possible resolution
     in the system. This is usually CPU clocks, and that's why the function is named that
@@ -173,7 +158,7 @@ def ticks_cpu() -> int:
     """
     ...
 
-def ticks_diff(ticks1: int, ticks2: int) -> int:
+def ticks_diff(ticks1, ticks2) -> int:
     """
     Measure ticks difference between values returned from `ticks_ms()`, `ticks_us()`,
     or `ticks_cpu()` functions, as a signed value which may wrap around.
@@ -264,13 +249,13 @@ def ticks_ms() -> int:
     """
     ...
 
-def ticks_us() -> int:
+def ticks_us() -> Any:
     """
     Just like `ticks_ms()` above, but in microseconds.
     """
     ...
 
-def time() -> int:
+class time:
     """
     Returns the number of seconds, as an integer, since the Epoch, assuming that
     underlying RTC is set and maintained as described above. If an RTC is not set, this
@@ -282,7 +267,8 @@ def time() -> int:
     `ticks_ms()` and `ticks_us()` functions.  If you need calendar time, `gmtime()` or
     `localtime()` without an argument is a better choice.
     """
-    ...
+
+    def __init__(self) -> None: ...
 
 def time_ns() -> int:
     """
